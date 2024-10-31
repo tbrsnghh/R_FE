@@ -27,7 +27,7 @@ const PostItem = ({ post }) => {
           overflow: isExpanded ? "visible" : "hidden",
         }}
       >
-        {isExpanded ? post.content : lines.slice(0, 6).join("\n\n")}
+        {isExpanded ? post.content : lines.slice(0, 1).join("\n\n")}
 
         <span
           className="text-blue-500 cursor-pointer italic"
