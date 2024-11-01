@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE_URL = 'https://66a07b337053166bcabb89f5.mockapi.io/api/v1/posts'
+const BASE_URL = 'https://66a07b337053166bcabb89f5.mockapi.io/api/v1/'
 export const getPosts = createAsyncThunk("posts/getPosts", async (thunkAPI) => {
-    const url = BASE_URL;
+    const url = BASE_URL + "posts";
     try {
       const response = await axios.get(url);
       return response.data;
@@ -11,10 +11,21 @@ export const getPosts = createAsyncThunk("posts/getPosts", async (thunkAPI) => {
       return thunkAPI.rejectWithValue(error.response.data); 
     }
   });
+
+export const getComments = createAsyncThunk("comments/getComments", async (thunkAPI) => {
+  const url = BASE_URL + "comments";
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data); 
+  }
+})
 const postsSlice = createSlice({
   name: 'posts',
   initialState: {
     posts: [],
+    comments: [],
     status: 'idle',
     error: null
   },
@@ -33,7 +44,18 @@ const postsSlice = createSlice({
       .addCase(getPosts.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
-      });
+      })
+      .addCase(getComments.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getComments.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.comments = action.payload;  
+      })
+      .addCase(getComments.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
   }
 });
 
