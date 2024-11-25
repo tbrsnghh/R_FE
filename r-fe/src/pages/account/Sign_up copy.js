@@ -1,44 +1,32 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { signup } from "../../store/userSlice";
+import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
-function SignUp({ onSignUpSuccess }) {
+function SignUp({ onSignUp }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState(null);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [studentCode, setStudentCode] = useState('');
+  const [password, setPassword] = useState('');
+  const [redirectPassword, setRedirectPassword] = useState('');
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Kiểm tra mật khẩu trùng khớp
-    if (password !== confirmPassword) {
-      setError("Passwords do not match!");
+    if (password !== redirectPassword) {
+      alert("Passwords do not match!");
       return;
     }
-
-    dispatch(signup({ username, email, password })).unwrap().then(() => {
-      navigate("/Sign_in");
-    }).catch(() => {
-      setError("Sign-up failed! Something went wrong. Please try again.");
-    });
+    onSignUp({ username, email, studentCode, password });
   };
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Sign Up</h2>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-600 font-semibold mb-2" htmlFor="username">
@@ -68,6 +56,20 @@ function SignUp({ onSignUpSuccess }) {
             />
           </div>
 
+          <div className="mb-4">
+            <label className="block text-gray-600 font-semibold mb-2" htmlFor="studentCode">
+              Student Code
+            </label>
+            <input
+              type="text"
+              id="studentCode"
+              value={studentCode}
+              onChange={(e) => setStudentCode(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
           <div className="mb-4 relative">
             <label className="block text-gray-600 font-semibold mb-2" htmlFor="password">
               Password
@@ -90,14 +92,14 @@ function SignUp({ onSignUpSuccess }) {
           </div>
 
           <div className="mb-6 relative">
-            <label className="block text-gray-600 font-semibold mb-2" htmlFor="confirmPassword">
+            <label className="block text-gray-600 font-semibold mb-2" htmlFor="redirectPassword">
               Confirm Password
             </label>
             <input
               type={passwordVisible ? "text" : "password"}
-              id="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              id="redirectPassword"
+              value={redirectPassword}
+              onChange={(e) => setRedirectPassword(e.target.value)}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
               required
             />

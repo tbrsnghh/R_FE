@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import logo from "../../asset/img/1-1.png";
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State để quản lý trạng thái mở/đóng của menu
@@ -7,11 +8,14 @@ const Header = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
+  const navigate = useNavigate();
+  const goToAccount = () => {
+    navigate('/Profile');
+};
   return (
     <nav className="w-full flex items-center p-2 bg-white border-b border-gray-200 shadow-md fixed left-0 top-0 z-10">
       <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
-        <div className="flex items-center mx-2 md:mx-4">
+        <div className="flex items-center mx-2 md:mx-4" onClick={()=> {navigate("/")}}>
           <img alt="logo" width={50} src={logo} />
         </div>
         <div className="flex items-center flex-grow mx-2 md:mx-4">
@@ -31,14 +35,17 @@ const Header = () => {
           </div>
           <i className="fas fa-home text-xl text-gray-600"></i>
           <i className="fas fa-bell text-xl text-gray-600"></i>
-
+          <button onClick={goToAccount}>
           <img
             alt="User avatar"
             className="h-8 w-8 rounded-full"
             height="40"
             src="https://storage.googleapis.com/a1aa/image/4qOj1C72Pja8CxQifISEQfBp3c6xcxpecPNShxJAgr05wFXnA.jpg"
             width="40"
+            
           />
+          </button>
+          
         </div>
         <div className="md:hidden">
           <div className="flex items-center space-x-2">
