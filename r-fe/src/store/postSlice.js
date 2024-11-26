@@ -49,6 +49,53 @@ export const getComments = createAsyncThunk("comments/getComments", async (thunk
     return thunkAPI.rejectWithValue(error.response.data); 
   }
 })
+
+
+// POST
+
+export const createPost = createAsyncThunk(
+  "posts/createPost",
+  async (post, thunkAPI) => {
+    const url = BASE_URL + "posts"; 
+    try {
+      const response = await axios.post(url, post, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  })
+
+  export const uploadsImage = createAsyncThunk(
+    "posts/uploadsImage",
+    async ({ images, id }, thunkAPI) => {
+      const url = `${BASE_URL}posts/${id}/images`;
+      const formData = new FormData();
+  
+      // Append each image file to formData
+      images.forEach((image, index) => {
+        formData.append('files', image); // Use the same key name for all images
+      });
+  
+      try {
+        const response = await axios.post(url, formData, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        return response.data;
+      } catch (error) {
+        return thunkAPI.rejectWithValue(
+          error.response?.data || "Failed to upload images"
+        );
+      }
+    }
+  );
+  
 const postsSlice = createSlice({
   name: 'posts',
   initialState: {
@@ -94,6 +141,26 @@ const postsSlice = createSlice({
         state.postImageNames.push(action.payload);
       })
       .addCase(getPostImageName.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(createPost.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(createPost.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+      })
+      .addCase(createPost.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(uploadsImage.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(uploadsImage.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+      })
+      .addCase(uploadsImage.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       })

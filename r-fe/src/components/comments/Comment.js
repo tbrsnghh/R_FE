@@ -6,12 +6,35 @@ const my_avatar =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPK2d9AVZ6B9urLI0IuWXWhhF-Rsuk1TEHNSM468o8LAbfkCASwtMfEpkz9J01f4o2Du0&usqp=CAU"
 
 function Comment({ comment }) {
+  console.log('comment', comment);
+  
     const user = {
         name: "My name"
     }
-
+    const convertTimestampToLocalTime = (timestamp) => {  
+      // Chuyển đổi Unix timestamp sang đối tượng Date  
+      const date = new Date(timestamp * 1000); // Nhân với 1000 để chuyển đổi giây thành mili giây  
+  
+      // Lấy giờ UTC+7  
+      const utcOffset = 7 * 60; // UTC+7 tính bằng phút  
+      const localTime = new Date(date.getTime() + utcOffset * 60 * 1000); // Cộng thêm 7 giờ  
+  
+      // Định dạng thời gian thành chuỗi dễ đọc  
+      const options = {  
+          year: 'numeric',  
+          month: '2-digit',  
+          day: '2-digit',  
+          hour: '2-digit',  
+          minute: '2-digit',  
+          second: '2-digit',  
+          hour12: false, // Định dạng 24 giờ  
+          timeZone: 'Asia/Bangkok' // Thiết lập múi giờ  
+      };  
+  
+      return localTime.toLocaleString('vi-VN', options);  
+  }; 
     const [mylike, setMyLike] = useState(null);
-    const likeCountStart = 50;
+    const likeCountStart = 0;
     const [likeCount, setLikeCount] = useState(likeCountStart);
     const handleMyLike = (op) => {
         if (mylike === null) {
@@ -34,11 +57,11 @@ function Comment({ comment }) {
       <div className="flex items-start">
         <img src={avatar} alt="avatar" className="w-8 h-8 rounded-full mr-3" />
         <div>
-          <p className="font-bold text-sm">{comment.id_user}</p>
-          <p className="text-gray-500 text-xs">1h ago</p>
+          <p className="font-bold text-sm">{comment.userName}</p>
+          <p className="text-gray-500 text-xs">{convertTimestampToLocalTime(comment.createdDate)}</p>
         </div>
       </div>
-      <p className="text-sm pl-10">{comment.content}</p>
+      <p className="text-sm pl-10">{comment.text}</p>
       <div className="flex items-center space-x-2 text-xs ml-10 py-2">
         <div className={`flex items-center justify-center rounded-full ${mylike === 'like' ? 'bg-blue-100 hover:bg-blue-200' : mylike === 'dislike' ? 'bg-red-100 hover:bg-red-200' : ''}`}>
           <button onClick={() => handleMyLike('like')} className={`flex items-center justify-center w-6 h-6 rounded-full  hover:bg-blue-200  focus:outline-none ${mylike === 'like' ? 'text-blue-500' : ''}`} >

@@ -11,7 +11,10 @@ const Header = () => {
   const navigate = useNavigate();
   const goToAccount = () => {
     navigate('/Profile');
-};
+  };
+  const goToCreatePost = () => {
+    navigate('/createapost')
+  }
   return (
     <nav className="w-full flex items-center p-2 bg-white border-b border-gray-200 shadow-md fixed left-0 top-0 z-10">
       <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
@@ -29,10 +32,12 @@ const Header = () => {
           </div>
         </div>
         <div className="hidden md:flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
-            <i className="fas fa-plus text-xl text-gray-600"></i>
-            <span className="text-gray-600 text-lg">Create</span>
-          </div>
+          <button className="flex items-center space-x-2 " 
+          onClick={goToCreatePost}
+          >
+            <i className="fas fa-plus text-xl text-gray-600 "></i>
+            <span className="text-gray-600 text-lg ">Create</span>
+          </button>
           <i className="fas fa-home text-xl text-gray-600"></i>
           <i className="fas fa-bell text-xl text-gray-600"></i>
           <button onClick={goToAccount}>

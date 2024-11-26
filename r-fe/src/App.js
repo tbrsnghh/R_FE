@@ -8,6 +8,8 @@ import Sign_up from "./pages/account/Sign_up";
 import Profile from "./pages/account/Profile";
 
 import { refreshAccessToken } from "./store/userSlice";
+import DetailPost from "./pages/detailPost/DetailPost";
+import CreatePost from "./pages/createPost/CreatePost";
 
 export default function App() {
   return (
@@ -41,8 +43,8 @@ function AppContent() {
         <Route path="/Sign_in" element={<Sign_in />} />
         <Route path="/Sign_up" element={<Sign_up />} />
         <Route path="/Profile" element={<Profile />} />
-        {/* <Route path="/test" element={< />} /> */}
-        
+        <Route path="/post/:id" element={<DetailPost />} />
+        <Route path="/createapost" element={<CreatePost />} />
       </Routes>
     </div>
   );

@@ -7,18 +7,11 @@ import AllComments from "../../components/comments/AllComments";
 import { refreshAccessToken } from "../../store/userSlice";
 export default function Home() {
   const dispatch = useDispatch();
-  const { posts, comments, status } = useSelector((state) => state.posts);
-  const [focusPost, setFocusPost] = useState(0);
+  const { posts, status } = useSelector((state) => state.posts);
 
   useEffect(() => {
     dispatch(getLasestPosts());
   }, []);
-
-  useEffect(() => {
-    if (focusPost !== 0) {
-      dispatch(getComments(focusPost));
-    }
-  }, [focusPost, dispatch]);
 
   return (
     <LayoutDefault>
@@ -28,27 +21,14 @@ export default function Home() {
         ) : (
           <>
             <div
-              className="w-1/2 overflow-y-auto"
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              className="w-1/2 mx-auto"
+              // style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
-              <ListPost
-                posts={posts}
-                focusPost={focusPost}
-                setFocusPost={setFocusPost}
-              />
+              <ListPost posts={posts} />
             </div>
-            {focusPost !== 0 && (
-              <div
-                className="w-1/2 overflow-y-auto mt-12"
-                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-              >
-                <AllComments focusPost={focusPost} comments={comments} />
-              </div>
-            )}
           </>
         )}
       </div>
     </LayoutDefault>
   );
 }
-
