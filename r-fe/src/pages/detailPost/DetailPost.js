@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ListPost from "../../components/listPost/ListPost";
 import PostItem from "../../components/listPost/PostItem";
 import AllComments from "../../components/comments/AllComments";
-import { getCommentsByPostId } from "../../store/commentSlice";
+import { getCmtsLv1, getCommentsByPostId } from "../../store/commentSlice";
 
 export default function DetailPost() {
   window.scrollTo(0, 0);
@@ -15,7 +15,7 @@ export default function DetailPost() {
     const postId = useParams().id;  
     const post = posts && posts.find(post => post.id == postId);
     useEffect(() => {
-      dispatch(getCommentsByPostId(postId));
+      dispatch(getCmtsLv1(postId));
     }, [postId]);
   return (
     <LayoutDefault>
@@ -36,7 +36,7 @@ export default function DetailPost() {
               <PostItem post={post} />
             </div>
             <div className="w-1/2 overflow-y-auto">
-              <AllComments comments={comments} />
+              <AllComments comments={comments} postId={postId}/>
             </div>
           </>
         )}
