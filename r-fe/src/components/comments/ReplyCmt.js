@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createComment, getSubCmts } from "../../store/commentSlice";
 
-const my_avatar =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPK2d9AVZ6B9urLI0IuWXWhhF-Rsuk1TEHNSM468o8LAbfkCASwtMfEpkz9J01f4o2Du0&usqp=CAU";
 
 function ReplyCmt({ user, parent_comment, onCancelReply, handleViewReplies }) {
   const dispatch = useDispatch();
@@ -12,7 +10,10 @@ function ReplyCmt({ user, parent_comment, onCancelReply, handleViewReplies }) {
     postId: parent_comment.postId,
     parentCommentId: parent_comment.id,
   });
+  console.log('user');
+  const my_avatar = user !== null ? `http://localhost:8080/api/posts/images/${user.profilePictureUrl?.replace(/^uploads\\/, "")}` : '';
 
+  
   const handlePostReply = () => {
     dispatch(createComment(newComment))
       .unwrap()
@@ -36,7 +37,7 @@ function ReplyCmt({ user, parent_comment, onCancelReply, handleViewReplies }) {
           className="w-8 h-8 rounded-full mr-3"
         />
         <div>
-          <p className="font-bold text-sm">{user.name}</p>
+          <p className="font-bold text-sm">{user.username}</p>
         </div>
       </div>
       <p className="text-sm pl-10">

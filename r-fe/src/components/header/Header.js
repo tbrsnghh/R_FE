@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import logo from "../../asset/img/1-1.png";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const profilePictureUrl = userInfo !== null ? `http://localhost:8080/api/posts/images/${userInfo.profilePictureUrl?.replace(/^uploads\\/, "")}` : '';
+  
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State để quản lý trạng thái mở/đóng của menu
 
   const toggleMenu = () => {
@@ -45,7 +49,7 @@ const Header = () => {
             alt="User avatar"
             className="h-8 w-8 rounded-full"
             height="40"
-            src="https://storage.googleapis.com/a1aa/image/4qOj1C72Pja8CxQifISEQfBp3c6xcxpecPNShxJAgr05wFXnA.jpg"
+            src={profilePictureUrl}
             width="40"
             
           />

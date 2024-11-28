@@ -89,7 +89,7 @@ const userSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
-        state.userInfo = action.payload.username; // Lưu thông tin user khi đăng nhập thành công
+        state.userInfo = action.payload.user; // Lưu thông tin user khi đăng nhập thành công
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;

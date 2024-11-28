@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 const PostItem = ({ post }) => {
-    const navigate = useNavigate
+  
+  
   const [isExpanded, setIsExpanded] = useState(true);
   const images = post.imageUrls?.map((url) => url.replace(/^uploads\\/, ""));
-
+  const profilePictureUrl = `http://localhost:8080/api/posts/images/${post.userDTO?.profilePictureUrl.replace(/^uploads\\/, "")}`
   const toggleExpand = () => {
     setIsExpanded((prevState) => !prevState);
   };
@@ -15,7 +17,7 @@ const PostItem = ({ post }) => {
       {/* Post Details */}
       <div className="flex items-center mb-2">
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzerDY3yl5rRnbAsOaMCGKGdK-Gv2BBfI20A&s"
+          src={profilePictureUrl}
           className="w-12 h-12 rounded-full mr-3"
           alt="avatar"
         />

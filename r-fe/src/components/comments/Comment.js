@@ -5,13 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSubCmts } from '../../store/commentSlice';
 import SubComment from './SubComment';
 
-const avatar =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzerDY3yl5rRnbAsOaMCGKGdK-Gv2BBfI20A&s";
-
 function Comment({ comment }) {
-  const user = {
-    name: "My name",
-  };
+  const user = comment.user  
+  const other_avatar = user !== null ? `http://localhost:8080/api/posts/images/${user.profilePictureUrl?.replace(/^uploads\\/, "")}` : "";
 
   const convertTimestampToLocalTime = (timestamp) => {
     const date = new Date(timestamp * 1000);
@@ -43,11 +39,6 @@ function Comment({ comment }) {
     dispatch(getSubCmts(comment.id)).unwrap().then(() => {
       console.log('subComments', subComments);
     });
-    // if (!subComments.length) {
-    //   console.log('comment.id', comment.id);
-      
-      
-    // }
     setShowReplies(!showReplies);
   };
   const handleMyLike = (op) => {
@@ -75,7 +66,7 @@ function Comment({ comment }) {
     <div className="flex flex-col mt-4 ml-2 py-2 border-b border-gray-200">
 
       <div className="flex items-start">
-        <img src={avatar} alt="avatar" className="w-8 h-8 rounded-full mr-3" />
+        <img src={other_avatar} alt="avatar" className="w-8 h-8 rounded-full mr-3" />
         <div>
           <p className="font-bold text-sm">{comment.userName}</p>
           <p className="text-gray-500 text-xs">
