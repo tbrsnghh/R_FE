@@ -9,6 +9,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null); // Preview URL for the selected image
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const dispatch = useDispatch();
@@ -25,7 +26,15 @@ export default function Profile() {
   };
 
   const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    if (file) {
+      // Generate a preview URL for the image file
+      const preview = URL.createObjectURL(file);
+      setPreviewUrl(preview);
+    } else {
+      setPreviewUrl(null);
+    }
   };
 
   const handleUpload = () => {
@@ -38,7 +47,9 @@ export default function Profile() {
       .unwrap()
       .then(() => {
         alert("Ảnh đại diện đã được cập nhật thành công!");
-        setIsModalOpen(false); // Đóng modal khi tải lên thành công
+        setIsModalOpen(false); // Close modal after successful upload
+        setSelectedFile(null); // Reset selected file
+        setPreviewUrl(null);   // Reset preview URL
       })
       .catch((error) => {
         console.error("Error uploading file:", error);
@@ -86,7 +97,7 @@ export default function Profile() {
               onClick={() => setIsModalOpen(true)}
               className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
             >
-              Cập nhật ảnh đại diện
+              Thay đổi ảnh đại diện
             </button>
           </div>
         </div>
@@ -95,14 +106,27 @@ export default function Profile() {
         {isModalOpen && (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg w-96">
-              <h3 className="text-lg font-bold mb-4">Cập nhật ảnh đại diện</h3>
+              <h3 className="text-lg font-bold mb-4">Thay đổi ảnh đại diện</h3>
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
                 className="block w-full mb-4"
               />
-              <div className="flex justify-end space-x-2">
+              
+              {/* Preview the selected image and file name */}
+              {selectedFile && (
+                <div className="flex flex-col items-center">
+                  <img
+                    src={previewUrl}
+                    alt="Preview"
+                    className="w-32 h-32 object-cover rounded-full mb-2"
+                  />
+                  <p className="text-gray-600 text-sm">{selectedFile.name}</p>
+                </div>
+              )}
+
+              <div className="flex justify-end space-x-2 mt-4">
                 <button
                   onClick={handleUpload}
                   className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
