@@ -7,7 +7,7 @@ const PostItem = ({ post }) => {
   
   const [isExpanded, setIsExpanded] = useState(true);
   const images = post.imageUrls?.map((url) => url.replace(/^uploads\\/, ""));
-  const profilePictureUrl = `http://localhost:8080/api/posts/images/${post.user?.profilePictureUrl.replace(/^uploads\\/, "")}`
+  const profilePictureUrl = post.user?.profilePictureUrl ? `http://localhost:8080/api/posts/images/${post.user?.profilePictureUrl?.replace(/^uploads\\/, "")}` : ""
   const toggleExpand = () => {
     setIsExpanded((prevState) => !prevState);
   };
