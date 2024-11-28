@@ -8,7 +8,9 @@ const PostItemPreview = React.memo(({ post = {}, images = [] }) => {
   if(user === null) {
     dispatch(getUserInfo());
   };
+
   const username = user?.username || "User";
+  const userImage = user !== null ? `http://localhost:8080/api/posts/images/${user.profilePictureUrl?.replace(/^uploads\\/, "")}` : '';
 
   // Memoize processed image URLs to avoid unnecessary computations
   const imageUrls = useMemo(
@@ -21,8 +23,7 @@ const PostItemPreview = React.memo(({ post = {}, images = [] }) => {
       {/* User Avatar and Info */}
       <div className="flex items-center mb-2">
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzerDY3yl5rRnbAsOaMCGKGdK-Gv2BBfI20A&s"
-          className="w-12 h-12 rounded-full mr-3"
+          src={userImage}          className="w-12 h-12 rounded-full mr-3"
           alt={`${username}'s avatar`}
         />
         <div>

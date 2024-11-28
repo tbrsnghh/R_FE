@@ -90,7 +90,7 @@ const CreateForm = ({ post, setPost, handleSave, images, setImages }) => {
           Save Draft
         </button>
         <button
-          className="px-4 py-2 bg-gray-200 text-gray-500 rounded-md 
+          className="px-4 py-2 bg-red-200 text-black-500 rounded-md 
           hover:bg-red-300 hover:text-black focus:outline-none"
           onClick={() => handleSave({ ...post, images })}
         >
