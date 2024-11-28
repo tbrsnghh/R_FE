@@ -5,7 +5,9 @@ import CreateCmt from "./CreateCmt";
 import { createComment } from "../../store/commentSlice";
 export default function AllComments({ comments , postId}) {
   return (
-    <div className="w-full p-4 rounded-lg space-y-4 shadow-md hover:shadow-lg transition-shadow">
+    <div className="w-full h-screen mx-1 p-4 space-y-4 bg-white overflow-y-auto"
+    style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+    >
       <CreateCmt postId={postId}/>
       {comments &&
         comments.map((comment) => (

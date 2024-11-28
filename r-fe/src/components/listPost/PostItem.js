@@ -7,13 +7,13 @@ const PostItem = ({ post }) => {
   
   const [isExpanded, setIsExpanded] = useState(true);
   const images = post.imageUrls?.map((url) => url.replace(/^uploads\\/, ""));
-  const profilePictureUrl = `http://localhost:8080/api/posts/images/${post.userDTO?.profilePictureUrl.replace(/^uploads\\/, "")}`
+  const profilePictureUrl = `http://localhost:8080/api/posts/images/${post.user?.profilePictureUrl.replace(/^uploads\\/, "")}`
   const toggleExpand = () => {
     setIsExpanded((prevState) => !prevState);
   };
   
   return (
-    <div className="border p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+    <div className="bg-white border p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
       {/* Post Details */}
       <div className="flex items-center mb-2">
         <img

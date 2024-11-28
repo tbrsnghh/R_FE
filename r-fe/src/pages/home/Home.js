@@ -21,8 +21,8 @@ export default function Home() {
         ) : (
           <>
             <div
-              className="w-1/2 mx-auto"
-              // style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              className="w-1/2 mx-auto overflow-auto"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               <ListPost posts={posts} />
             </div>

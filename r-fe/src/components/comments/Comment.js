@@ -63,12 +63,14 @@ function Comment({ comment }) {
     
   };
   return (
-    <div className="flex flex-col mt-4 ml-2 py-2 border-b border-gray-200">
+    <div className="flex flex-col mt-4 p-2 rounded-lg 
+    hover:shadow-md transition-shadow
+    hover:bg-stone-50">
 
       <div className="flex items-start">
         <img src={other_avatar} alt="avatar" className="w-8 h-8 rounded-full mr-3" />
         <div>
-          <p className="font-bold text-sm">{comment.userName}</p>
+          <p className="font-bold text-sm">{comment.user.username}</p>
           <p className="text-gray-500 text-xs">
             {convertTimestampToLocalTime(comment.createdDate)}
           </p>
@@ -79,36 +81,9 @@ function Comment({ comment }) {
 
       <div className="flex items-center text-xs ml-10 py-2">
 
-        {/* <div
-          className={`flex items-center justify-center rounded-full ${
-            mylike === 'like'
-              ? 'bg-blue-100 hover:bg-blue-200'
-              : mylike === 'dislike'
-              ? 'bg-red-100 hover:bg-red-200'
-              : ''
-          }`}
-        >
+        <div className="flex items-center space-x-1">
           <button
-            onClick={() => handleMyLike('like')}
-            className={`flex items-center justify-center w-6 h-6 rounded-full  hover:bg-blue-200  focus:outline-none ${
-              mylike === 'like' ? 'text-blue-500' : ''
-            }`}
-          >
-            <i className="fa-solid fa-arrow-up "></i>
-          </button>
-          <span className="mx-1">{likeCount}</span>
-          <button
-            onClick={() => handleMyLike('dislike')}
-            className={`flex items-center justify-center w-6 h-6 rounded-full  hover:bg-red-200 focus:outline-none ${
-              mylike === 'dislike' ? 'text-red-500' : ''
-            }`}
-          >
-            <i className="fa-solid fa-arrow-down "></i>
-          </button>
-        </div> */}
-        <div className="flex items-center">
-          <button
-            className="flex items-center justify-center h-6 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none"
+            className="flex items-center justify-center h-6 rounded-full bg-blue-100 hover:bg-blue-300 focus:outline-none"
             onClick={() => setIsReplying(!isReplying)}
           >
             {/* <i className="fas fa-reply text-gray-500"></i> */}
@@ -116,7 +91,7 @@ function Comment({ comment }) {
           </button>
 
           <button
-            className="flex items-center justify-center h-6 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none"
+            className="flex items-center justify-center h-6 rounded-full bg-blue-100 hover:bg-blue-300 focus:outline-none"
             onClick={handleViewReplies}>
             <p className="mx-1">View replies</p>
           </button>

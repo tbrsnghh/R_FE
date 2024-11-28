@@ -26,7 +26,7 @@ function SubComment({ comment }) {
     <div className="flex mt-2 ml-10">
       <img src={other_avatar} alt="avatar" className="w-6 h-6 rounded-full mr-2" />
       <div>
-        <p className="font-bold text-sm">{comment.userName}</p>
+        <p className="font-bold text-sm">{comment.user.username}</p>
         <p className="text-xs text-gray-500">{convertTimestampToLocalTime(comment.createdDate)}</p>
         <p className="text-sm">{comment.text}</p>
       </div>
