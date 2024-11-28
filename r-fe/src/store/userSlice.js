@@ -62,13 +62,29 @@ export const refreshAccessToken = createAsyncThunk(
     }
   }
 );
-
+export const getUserInfo = createAsyncThunk(
+  "user/getUserInfo",
+  async (username, thunkAPI) => {
+    const url = `${BASE_URL}auth/userinfo`;
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }    
+  }
+)
 const userSlice = createSlice({
   name: "user",
   initialState: {
     userInfo: null,     // Thông tin người dùng
     loading: false,     // Trạng thái loading
     error: null,        // Lỗi nếu đăng nhập thất bại
+    state: 'idle'
   },
   reducers: {
     logout: (state) => {
@@ -118,6 +134,18 @@ const userSlice = createSlice({
       .addCase(signup.fulfilled, (state, action) => {
         state.loading = false;
         state.userInfo = action.payload.username;
+      })
+      .addCase(getUserInfo.pending, (state) => {
+        state.state = 'loading';
+        state.error = null;
+      })
+      .addCase(getUserInfo.fulfilled, (state, action) => {
+        state.state = 'succeeded';
+        state.userInfo = action.payload.data;
+      })
+      .addCase(getUserInfo.rejected, (state, action) => {
+        state.state = 'failed';
+        state.error = action.payload;
       });
   },
 });

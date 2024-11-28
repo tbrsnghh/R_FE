@@ -1,13 +1,20 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInfo } from "../../store/userSlice";
 
-const PostItemPreview = ({ post, images }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const user = useSelector((state) => state.user);
-
-  const toggleExpand = () => {
-    setIsExpanded((prevState) => !prevState);
+const PostItemPreview = React.memo(({ post = {}, images = [] }) => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.userInfo);
+  if(user === null) {
+    dispatch(getUserInfo());
   };
+  const username = user?.username || "User";
+
+  // Memoize processed image URLs to avoid unnecessary computations
+  const imageUrls = useMemo(
+    () => images.map((image) => URL.createObjectURL(image)),
+    [images]
+  );
 
   return (
     <div className="border p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
@@ -16,33 +23,34 @@ const PostItemPreview = ({ post, images }) => {
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzerDY3yl5rRnbAsOaMCGKGdK-Gv2BBfI20A&s"
           className="w-12 h-12 rounded-full mr-3"
-          alt="avatar"
+          alt={`${username}'s avatar`}
         />
         <div>
-          <p className="text-gray-700 font-bold">{user?.userInfo || 'User'}</p>
+          <p className="text-gray-700 font-bold">{username}</p>
         </div>
       </div>
-      
+
       {/* Post Title and Description */}
-      <p className="text-2xl font-bold mb-3">{post.postName}</p>
-      <div className="text-gray-700 whitespace-pre-line break-words">{post.description}</div>
+      <p className="text-2xl font-bold mb-3 break-words">{post.postName || "Untitled Post"}</p>
+      <div className="text-gray-700 whitespace-pre-line break-words">
+        {post.description || "No description provided."}
+      </div>
 
       {/* Post Images */}
       <div className="mt-4">
         <div className="grid grid-cols-3 gap-2 mt-2">
-          {images &&
-            images.map((image, index) => (
-              <img
-                key={index}
-                src={URL.createObjectURL(image)} // Creates a temporary URL for the image
-                alt={`Post image ${index + 1}`}
-                className="w-full h-auto object-cover rounded-md"
-              />
-            ))}
+          {imageUrls.map((url, index) => (
+            <img
+              key={index}
+              src={url}
+              alt={`Post image ${index + 1}`}
+              className="w-full h-auto object-cover rounded-md"
+            />
+          ))}
         </div>
       </div>
     </div>
   );
-};
+});
 
 export default PostItemPreview;
