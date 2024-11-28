@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../../store/userSlice";
 
 const PostItemPreview = React.memo(({ post = {}, images = [] }) => {
-  const dispatch = useDispatch();
+  
   const user = useSelector((state) => state.user.userInfo);
+  const dispatch = useDispatch();
   if(user === null) {
     dispatch(getUserInfo());
   };

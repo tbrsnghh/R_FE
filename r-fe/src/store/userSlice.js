@@ -78,6 +78,31 @@ export const getUserInfo = createAsyncThunk(
     }    
   }
 )
+export const uploadProfilePicture = createAsyncThunk(
+  "user/uploadProfilePicture",
+  async (file, thunkAPI) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await axios.post(`${BASE_URL}auth/profilePicture`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`
+        }
+      });
+
+      // Update user profile picture if necessary
+      thunkAPI.dispatch(getUserInfo());
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to upload profile picture"
+      );
+    }
+  }
+);
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -144,6 +169,17 @@ const userSlice = createSlice({
         state.userInfo = action.payload.data;
       })
       .addCase(getUserInfo.rejected, (state, action) => {
+        state.state = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(uploadProfilePicture.pending, (state) => {
+        state.state = 'loading';
+        state.error = null;
+      })
+      .addCase(uploadProfilePicture.fulfilled, (state, action) => {
+        state.state = 'succeeded';
+      })
+      .addCase(uploadProfilePicture.rejected, (state, action) => {
         state.state = 'failed';
         state.error = action.payload;
       });
