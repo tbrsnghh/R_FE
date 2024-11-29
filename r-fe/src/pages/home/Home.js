@@ -4,13 +4,24 @@ import ListPost from "../../components/listPost/ListPost";
 import { useDispatch, useSelector } from "react-redux";
 import { getComments, getLasestPosts, getPosts } from "../../store/postSlice";
 import AllComments from "../../components/comments/AllComments";
-import { refreshAccessToken } from "../../store/userSlice";
+import { logout, refreshAccessToken } from "../../store/userSlice";
+import { useNavigate } from "react-router-dom";
 export default function Home() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { posts, status } = useSelector((state) => state.posts);
-
+ 
   useEffect(() => {
-    dispatch(getLasestPosts());
+    dispatch(getLasestPosts()).then((res) => {
+      setTimeout(() => {
+        console.log('res', res);
+        if (res.payload == undefined) {
+          dispatch(logout());
+          navigate("/Sign_in");
+        }
+      }, 1000);
+      
+    });    
   }, []);
 
   return (

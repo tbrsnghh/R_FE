@@ -1,7 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { useNavigate } from "react-router-dom"; 
 import axios from 'axios';
+import { logout } from './userSlice';
 
 const BASE_URL = 'http://localhost:8080/api/'
+
 
 export const getLasestPosts = createAsyncThunk(
   "posts/getLasestPosts",
@@ -10,11 +13,14 @@ export const getLasestPosts = createAsyncThunk(
     const token = localStorage.getItem('authToken'); 
     try {
       const response = await axios.get(url, {
+        
         headers: {
           Authorization: `Bearer ${token}` // Add token to Authorization header
         }
       });
-      return response.data; // Assuming the API returns an object or array
+      
+
+      return response.data
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data || "Failed to fetch latest posts"
