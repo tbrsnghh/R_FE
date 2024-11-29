@@ -63,7 +63,7 @@ function Comment({ comment }) {
     
   };
   return (
-    <div className="flex flex-col mt-4 p-2 rounded-lg 
+    <div className="flex flex-col p-2 m-1 rounded-lg 
     hover:shadow-md transition-shadow
     hover:bg-stone-50">
 

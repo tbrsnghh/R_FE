@@ -36,7 +36,7 @@ function CreateCmt({ postId }) {
   const [isTyping, setIsTyping] = useState(false);
 
   return (
-    <div className="flex items-center space-x-2 py-2 mb-10">
+    <div className="flex items-center space-x-2 py-2 m-2 mb-5">
       <input
         type="text"
         className="w-full px-2 py-1 border border-gray-300 rounded-md"
