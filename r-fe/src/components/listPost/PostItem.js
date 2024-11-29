@@ -6,7 +6,7 @@ import { getLasestPosts } from "../../store/postSlice";
 
 const PostItem = ({ post }) => {
   const [isExpanded, setIsExpanded] = useState(true);
-  
+
   const images = post.imageUrls?.map((url) => url.replace(/^uploads\\/, ""));
   const profilePictureUrl = post.user?.profilePictureUrl
     ? `http://localhost:8080/api/posts/images/${post.user?.profilePictureUrl?.replace(
@@ -33,8 +33,16 @@ const PostItem = ({ post }) => {
           alt="avatar"
         />
         <div>
-          <p className="text-gray-700 font-bold">{post.user ? post.user.username : "Anonymous"}</p>
+          <p className="text-gray-700 font-bold">
+            {post.user ? post.user.username : "Anonymous"}
+          </p>
           <p className="text-gray-600 text-sm">{post.duration}</p>
+          {/* Subreddit Tag */}
+          {post.subredditName && (
+            <p className="inline-block bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full text-[10px] font-medium mb-2">
+              {post.subredditName}
+            </p>
+          )}
         </div>
       </div>
 
@@ -63,7 +71,7 @@ const PostItem = ({ post }) => {
               src={`http://localhost:8080/api/posts/images/${img}`}
               alt={`Post image ${index + 1}`}
               className="w-full max-w-sm mx-auto h-auto rounded-md mb-2 object-cover"
-        style={{ maxHeight: "200px" }}
+              style={{ maxHeight: "200px" }}
             />
           ))}
       </div>

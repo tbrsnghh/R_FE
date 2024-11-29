@@ -11,7 +11,7 @@ export default function CreatePost() {
   const [post, setPost] = useState({
     postName: "",
     description: "",
-    subredditName: "KHMT",
+    subredditName: "",
   });
   const [images, setImages] = useState([]);
 

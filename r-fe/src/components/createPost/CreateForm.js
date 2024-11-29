@@ -1,12 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSubreddit } from '../../store/voteSlice';
 
 const CreateForm = ({ post, setPost, handleSave, images, setImages }) => {
+  const dispatch = useDispatch();
   const [tab, setTab] = useState('Text'); // State to manage which tab is active
+  const [error, setError] = useState(''); // State to manage error messages
+
+  // Fetch subreddits from Redux store
+  useEffect(() => {
+    dispatch(getSubreddit());
+  }, [dispatch]);
+
+  const subreddits = useSelector((state) => state.vote.subreddit);
 
   // Handle image upload
   const handleImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     setImages(selectedFiles); // Set selected files to images state
+  };
+
+  // Handle form submission
+  const handleFormSubmit = () => {
+    if (!post.subreddit) {
+      setError('Xin chọn danh mục bài viết.');
+      setTimeout(() => setError(''), 1000);
+      return;
+    }
+    setError(''); // Clear error if validation passes
+    handleSave({ ...post, images });
   };
 
   return (
@@ -22,6 +44,26 @@ const CreateForm = ({ post, setPost, handleSave, images, setImages }) => {
           onChange={(e) => setPost({ ...post, postName: e.target.value })}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
         />
+      </div>
+
+      {/* Subreddit Selector */}
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2">Select Subreddit</label>
+        <select
+          value={post.subreddit || ''}
+          onChange={(e) => setPost({ ...post, subreddit: e.target.value })}
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+        >
+          <option value="" disabled>
+            Chọn danh mục bài viết
+          </option>
+          {subreddits.map((subreddit) => (
+            <option key={subreddit.id} value={subreddit.name}>
+              {subreddit.name}
+            </option>
+          ))}
+        </select>
+        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
       </div>
 
       {/* Tabs */}
@@ -67,15 +109,16 @@ const CreateForm = ({ post, setPost, handleSave, images, setImages }) => {
               className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             />
             <div className="mt-2 flex flex-wrap gap-2">
-              {images && images.map((image, index) => (
-                <div key={index} className="w-32 h-32 relative">
-                  <img
-                    src={URL.createObjectURL(image)}
-                    alt={`Selected ${index + 1}`}
-                    className="w-full h-full object-cover rounded-md"
-                  />
-                </div>
-              ))}
+              {images &&
+                images.map((image, index) => (
+                  <div key={index} className="w-32 h-32 relative">
+                    <img
+                      src={URL.createObjectURL(image)}
+                      alt={`Selected ${index + 1}`}
+                      className="w-full h-full object-cover rounded-md"
+                    />
+                  </div>
+                ))}
             </div>
           </>
         )}
@@ -92,7 +135,7 @@ const CreateForm = ({ post, setPost, handleSave, images, setImages }) => {
         <button
           className="px-4 py-2 bg-red-200 text-black-500 rounded-md 
           hover:bg-red-300 hover:text-black focus:outline-none"
-          onClick={() => handleSave({ ...post, images })}
+          onClick={handleFormSubmit}
         >
           Post
         </button>

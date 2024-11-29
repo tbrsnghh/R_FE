@@ -24,11 +24,23 @@ export const votePost = createAsyncThunk(
     }
   }
 );
-
+export const getSubreddit = createAsyncThunk(
+  "vote/getSubreddit",
+  async (subreddit, thunkAPI) => {
+    const url = BASE_URL + "subreddit"
+    try {
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+)
 const voteSlice = createSlice({
   name: "vote",
   initialState: {
     data: null,
+    subreddit: null,
     error: null,
     state: 'idle', // idle | loading | succeeded | failed
   },
@@ -43,6 +55,18 @@ const voteSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(votePost.rejected, (state, action) => {
+        state.state = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(getSubreddit.pending, (state) => {
+        state.state = 'loading';
+        state.error = null;
+      })
+      .addCase(getSubreddit.fulfilled, (state, action) => {
+        state.state = 'succeeded';
+        state.subreddit = action.payload;
+      })
+      .addCase(getSubreddit.rejected, (state, action) => {
         state.state = 'failed';
         state.error = action.payload;
       });
