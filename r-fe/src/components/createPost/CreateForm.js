@@ -22,7 +22,7 @@ const CreateForm = ({ post, setPost, handleSave, images, setImages }) => {
 
   // Handle form submission
   const handleFormSubmit = () => {
-    if (!post.subreddit) {
+    if (!post.subredditName) {
       setError('Xin chọn danh mục bài viết.');
       setTimeout(() => setError(''), 1000);
       return;
@@ -50,7 +50,7 @@ const CreateForm = ({ post, setPost, handleSave, images, setImages }) => {
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">Select Subreddit</label>
         <select
-          value={post.subreddit || ''}
+          value={post.subredditName || ''}
           onChange={(e) => setPost({ ...post, subredditName: e.target.value })}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
         >
