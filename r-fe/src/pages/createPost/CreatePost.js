@@ -5,6 +5,7 @@ import PostItem from "../../components/listPost/PostItem";
 import { useDispatch } from "react-redux";
 import { createPost, uploadsImage } from "../../store/postSlice";
 import PostItemPreview from "../../components/listPost/PostItem copy";
+import { useNavigate } from "react-router-dom";
 
 export default function CreatePost() {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ export default function CreatePost() {
     subredditName: "",
   });
   const [images, setImages] = useState([]);
+  const navigate = useNavigate();
 
   // const handleSave = async () => {
   //   try {
@@ -43,12 +45,15 @@ export default function CreatePost() {
 
         // Step 2: Dispatch uploadsImage with the obtained postId  
         if (images.length > 0) {  
-            await dispatch(uploadsImage({ images, id: postId })).unwrap();  
+            await dispatch(uploadsImage({ images, id: postId })).unwrap().then(() => {
+              navigate('/');
+            });  
         }  
 
-        console.log("Post created and images uploaded successfully.");  
+        window.alert("Post created and images uploaded successfully.");  
+        navigate('/')
     } catch (error) {  
-        console.error("Error creating post or uploading images:", error);  
+        window.alert("Error creating post or uploading images:", error);  
     }  
 };
   return (
