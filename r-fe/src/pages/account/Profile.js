@@ -81,7 +81,7 @@ export default function Profile() {
               <p><strong>Họ: </strong>{userInfo?.lastName || "Chưa cập nhật"}</p>
               <p><strong>Số điện thoại: </strong>{userInfo?.phoneNumber || "Chưa cập nhật"}</p>
               <p><strong>Email: </strong>{userInfo?.email || "Chưa cập nhật"}</p>
-              <p><strong>Ngày sinh: </strong>{userInfo?.birthday || "Chưa cập nhật"}</p>
+              <p><strong>Ngày sinh: </strong>{userInfo?.birthDay || "08/12/2002"}</p>
               <p><strong>Địa chỉ: </strong>{userInfo?.address || "Chưa cập nhật"}</p>
             </div>
           </div>

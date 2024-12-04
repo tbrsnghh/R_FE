@@ -51,13 +51,13 @@ const CreateForm = ({ post, setPost, handleSave, images, setImages }) => {
         <label className="block text-gray-700 text-sm font-bold mb-2">Select Subreddit</label>
         <select
           value={post.subreddit || ''}
-          onChange={(e) => setPost({ ...post, subreddit: e.target.value })}
+          onChange={(e) => setPost({ ...post, subredditName: e.target.value })}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
         >
           <option value="" disabled>
             Chọn danh mục bài viết
           </option>
-          {subreddits.map((subreddit) => (
+          {subreddits && subreddits.map((subreddit) => (
             <option key={subreddit.id} value={subreddit.name}>
               {subreddit.name}
             </option>
