@@ -1,4 +1,4 @@
-# R_FE
+# Veddit Frontend
 Đồ án chuyên ngành phần Frontend
 ## Cách chạy
 1. Clone code về và mở đúng project
